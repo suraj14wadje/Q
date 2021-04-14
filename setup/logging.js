@@ -1,17 +1,23 @@
 const { createLogger, format, transports } = require('winston');
 
-const logFormatter = format.printf((info) => {
+const fileLogs = format.printf((info) => {
     let { level, stack, message, timestamp } = info; 
     message = stack || message ;
 
     return `${timestamp} ${level}: ${message}`;
+  });
+
+const consoleLogs = format.printf((info) => {
+    let { stack, message } = info; 
+    message = stack || message ;
+    return `${message}`;
   });
  
 const logger = createLogger({
   format:format.combine(
     format.splat(),
     format.timestamp({format:"YYYY-MM-DD HH:mm:ss"}),
-    logFormatter
+    fileLogs
     )
 });
 
@@ -22,12 +28,12 @@ if (process.env.NODE_ENV === 'production') {
 else {
   logger.add(
     new transports.Console({
-      level:"debug",
-      format:format.combine(format.colorize(),logFormatter)
+      level:"silly",
+      format:format.combine(format.colorize({all: true}),consoleLogs)
   }));
 }
 
-logger.debug("Logger configuration complet");
+logger.debug("Logger configured");
 
 global.log = logger
 
