@@ -3,7 +3,7 @@ const config = require("config");
 
 const app = express();
 
-const PORT = config.get("port") || 000;
+const PORT = config.get("port") || 3000;
 
 const server = app.listen(PORT, ()=>{
     console.log(`Listening on port ${PORT}`);
