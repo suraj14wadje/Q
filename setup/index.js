@@ -1,5 +1,10 @@
-require('dotenv').config()
-require('./logging')
-require("./db")
+const env = require('dotenv');
+const db = require("./db")
 
-log.debug("Selected enviornment : "+ (process.env.NODE_ENV || "dev"))
+module.exports = async ()=>{
+    env.config()
+    require('./logging')
+    log.debug("Selected enviornment : " +  process.env.NODE_ENV )
+    await db();
+}
+
