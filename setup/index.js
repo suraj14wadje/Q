@@ -1,3 +1,4 @@
+require('express-async-errors');
 const env = require('dotenv');
 const db = require("./db")
 

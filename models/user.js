@@ -8,4 +8,6 @@ const userSchema = moongoose.Schema({
     emailId: String
 });
 
-module.exports = userSchema;
+const User = moongoose.model('User', userSchema);
+
+module.exports = User;

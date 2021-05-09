@@ -9,8 +9,8 @@ router.use(express.json())
 
 router.use("/hello",helloWorld)
 
-router.use(error)
-
 router.use('/user', user);
+
+router.use(error)
 
 module.exports = router;
