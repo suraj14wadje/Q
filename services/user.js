@@ -12,7 +12,6 @@ async function createUser(data) {
     userData.password = await encrypt(userData.password)
     const user = new User(userData);
     const result = await user.save();
-    console.log(result);
     throw new Error('message');
 }
 
