@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt');
+const Joi = require('joi');
+const passwordComplexity = require('joi-password-complexity');
 const User = require('../models/user');
 
 async function createUser(data) {
@@ -12,7 +14,8 @@ async function createUser(data) {
     userData.password = await encrypt(userData.password)
     const user = new User(userData);
     const result = await user.save();
-    throw new Error('message');
+    delete result['password'];
+    return result;
 }
 
 async function encrypt(password) {
@@ -20,4 +23,16 @@ async function encrypt(password) {
     return await bcrypt.hash(password, salt);
 };
 
-module.exports = {createUser};
+function validateUser(user) {
+    const schema = Joi.object({
+        fname: Joi.string().min(3).required(),
+        lname:  Joi.string().min(3).required(),
+        role: Joi.string().required(),
+        emailId: Joi.string().email().required(),
+        password: passwordComplexity()
+    })
+    return schema.validate(user) 
+}
+
+module.exports.createUser = createUser;
+module.exports.validateUser = validateUser;
